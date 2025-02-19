@@ -27,7 +27,9 @@ app.get('/p/:shortId', async (req, res) => {
     const title = "Test Dynamic Linking";
     const description = "This is test api for dynamic link";
     const  image = "https://images.unsplash.com/photo-1739219959019-dd317f76c7e8?q=80&w=2058&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"; 
-    const originalUrl = "https://test-dynamic-link.onrender.com/p/postid";
+    const fallbackUrl = `https://test-dynamic-link.onrender.com/p/${req.params.shortId}`;
+    const appUrl = `testapp://post/${req.params.shortId}`;
+    const playStoreUrl = "https://play.google.com/store/apps/details?id=com.mourya.notescribe";
 
     res.send(`
         <html>
@@ -35,14 +37,22 @@ app.get('/p/:shortId', async (req, res) => {
             <meta property="og:title" content="${title}">
             <meta property="og:description" content="${description}">
             <meta property="og:image" content="${image}">
-            <meta property="og:url" content="https://test-dynamic-link.onrender.com/p/${req.params.shortId}">
+            <meta property="og:url" content="${fallbackUrl}">
             <meta property="og:type" content="article">
             <title>${title}</title>
+            <script>
+                function openApp() {
+                    window.location.href = "${appUrl}";
+                    setTimeout(() => {
+                        window.location.href = "${playStoreUrl}";
+                    }, 2000); 
+                }
+                openApp();
+            </script>
         </head>
         <body>
-            <h1>${title}</h1>
-            <p>${description}</p>
-            <img src="${image}" alt="Post Image" width="50%" height="50%">
+            <h1>Redirecting...</h1>
+            <p>If the app doesn't open, <a href="${fallbackUrl}">click here</a>.</p>
         </body>
         </html>
     `);
