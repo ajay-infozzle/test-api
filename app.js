@@ -45,7 +45,7 @@ app.get('/p/:shortId', async (req, res) => {
                     window.location.href = "${appUrl}";
                     setTimeout(() => {
                         window.location.href = "${playStoreUrl}";
-                    }, 2000); 
+                    }, 100); 
                 }
                 openApp();
             </script>
